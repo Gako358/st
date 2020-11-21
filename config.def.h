@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
+static char *font = "DejaVuSansMono Nerd Font:pixelsize=14:antialias=true:autohint=true";
 #if FONT2_PATCH
 /* Spare fonts */
 static char *font2[] = {
@@ -129,44 +129,34 @@ float alpha = 0.8;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* 8 normal colors */
-	"black",
-	"red3",
-	"green3",
-	"yellow3",
-	"blue2",
-	"magenta3",
-	"cyan3",
-	"gray90",
-
-	/* 8 bright colors */
-	"gray50",
-	"red",
-	"green",
-	"yellow",
-	"#5c5cff",
-	"magenta",
-	"cyan",
-	"white",
-
-	[255] = 0,
-
-	/* more colors can be added after 255 to use with DefaultXX */
-	"#add8e6", /* 256 -> cursor */
-	"#555555", /* 257 -> rev cursor*/
-	"#000000", /* 258 -> bg */
-	"#e5e5e5", /* 259 -> fg */
+    [0] = "#2c2e34", /* hard contrast: #1d2021 / soft contrast: #32302f */
+    [1] = "#fc5d7c", /* red     */
+    [2] = "#9ed072", /* green   */
+    [3] = "#e7c664", /* yellow  */
+    [4] = "#76cce0", /* blue    */
+    [5] = "#b39df3", /* magenta */
+    [6] = "#f39660", /* cyan    */
+    [7] = "#e2e2e3", /* white   */
+                                    
+    /* 8 bright colors */
+    [8]  = "#928374", /* black   */
+    [9]  = "#fc5d7c", /* red     */
+    [10] = "#9ed072", /* green   */
+    [11] = "#e7c664", /* yellow  */
+    [12] = "#76cce0", /* blue    */
+    [13] = "#b39df3", /* magenta */
+    [14] = "#f39660", /* cyan    */
+    [15] = "#e2e2e3", /* white   */
 };
-
 
 /*
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 259;
-unsigned int defaultbg = 258;
-unsigned int defaultcs = 256;
-unsigned int defaultrcs = 257;
-
+unsigned int defaultfg = 15;
+unsigned int defaultbg = 0;
+unsigned int defaultcs = 15;
+static int defaultrcs = 257;
 /*
  * Default shape of cursor
  * 2: Block ("█")
@@ -193,7 +183,7 @@ static char* mouseshape = "xterm";
  * Default colour and shape of the mouse cursor
  */
 static unsigned int mouseshape = XC_xterm;
-static unsigned int mousefg = 7;
+static unsigned int mousefg = 15;
 static unsigned int mousebg = 0;
 #endif // THEMED_CURSOR_PATCH
 
@@ -292,8 +282,8 @@ static MouseShortcut maltshortcuts[] = {
 #endif // SCROLLBACK_MOUSE_ALTSCREEN_PATCH
 
 /* Internal keyboard shortcuts. */
-#define MODKEY Mod1Mask
-#define TERMMOD (ControlMask|ShiftMask)
+#define MODKEY Mod4Mask
+#define TERMMOD (Mod1Mask|ShiftMask)
 
 #if EXTERNALPIPE_PATCH // example command
 static char *openurlcmd[] = { "/bin/sh", "-c",
