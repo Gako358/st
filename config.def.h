@@ -5,11 +5,8 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "JetBrainsMono Nerd Font:pixelsize=13:antialias=true:autohint=true";
-/* Spare fonts */
-static char *font2[] = { "Unifont:pixelsize=10:antialias=true:autohint=true" };
-/*	"Inconsolata for Powerline:pixelsize=12:antialias=true:autohint=true", */
-/*	"Hack Nerd Font Mono:pixelsize=11:antialias=true:autohint=true", */
+static char *font = "JetBrainsMono Nerd Font :pixelsize=13:antialias=true:autohint=true";
+static char *font2[] = { "JetBrainsMono Nerd Font :pixelsize=13:antialias=true:autohint=true" };
 
 static int borderpx = 2;
 
