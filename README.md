@@ -20,6 +20,7 @@ xrdb merge pathToXresourcesFile
 - Ligatures
 - sixel (check sixel branch)
 - scrollback
+- Inverter
 - Clipboard
 - Alpha(Transparency)
 - Boxdraw
