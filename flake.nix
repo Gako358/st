@@ -11,7 +11,7 @@
 	overlay = final: prev: {
 	  st_mx = prev.st.overrideAttrs (oldAttrs: rec {
 	    version = "main";
-	    src = ./.;
+	    src = builtins.path { path = ./.; name = "st"; };
 	    buildInputs = oldAttrs.buildInputs ++ [
 	      prev.harfbuzz.dev
 	    ];
