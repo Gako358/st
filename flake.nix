@@ -9,7 +9,7 @@
       let
         system = "x86_64-linux";
 	overlay = final: prev: {
-	  st_mx = prev.st.overrideAttrs (oldAttrs: rec {
+	  st = prev.st.overrideAttrs (oldAttrs: rec {
 	    version = "main";
 	    src = builtins.path { path = ./.; name = "st"; };
 	    buildInputs = oldAttrs.buildInputs ++ [
