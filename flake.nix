@@ -16,6 +16,9 @@
 	      st_mx = prev.st.overrideAttrs (oldAttrs: rec {
 	        version = "main";
 		src = ./.;
+		buildInputs = oldAttrs.buildInputs ++ [
+		  prev.harfbuzz.dev
+		];
 	      });
 	    })
           ];
