@@ -10,7 +10,8 @@
         st = prev.st.overrideAttrs (old: {
 	  src = builtins.path { path = ./.; name = "st"; };
 	  buildInputs = old.buildInputs ++ [
-	    prev.harfbuzz
+	    prev.harfbuzz.dev
+	    prev.harfbuzz.pc
 	  ];
 	});
       };
