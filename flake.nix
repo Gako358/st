@@ -1,28 +1,37 @@
 {
   description = "MerrinX ST build";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
 
-  outputs = { self, nixpkgs }: 
-    let 
-      system = "x86_64-linux";
-      overlay = final: prev: {
-        st = prev.st.overrideAttrs (old: {
-	  src = builtins.path { path = ./.; name = "st"; };
-	  buildInputs = old.buildInputs ++ [
-	    prev.harfbuzz.dev
-	    prev.harfbuzz.pc
-	  ];
-	});
-      };
-      in 
-      {
-        overlays.default = overlay;
-	checks.${system}.build = (
-	  import nixpkgs {
-	    inherit system;
-	    overlays = [ overlay ];
-	  }
-        ).st;
-      };
+  outputs = { self, nixpkgs, flake-utils }: 
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs {
+	  inherit system;
+	  overlays = [
+	    (final: prev: {
+	      st_mx = prev.st.overrideAttrs (oldAttrs: rec {
+	        version = "main";
+		src = ./.;
+	      });
+	    })
+          ];
+	};
+	in
+	rec {
+	  apps = {
+	    st = {
+	      type = "app";
+	      program = "${defaultPackage}/bin/st";
+	    };
+	  };
+
+	  package.st_mx = pkgs.st_mx;
+	  defaultApp = apps.st;
+	  defaultPackage = pkgs.st_mx;
+	}
+    );
 }
