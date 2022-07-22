@@ -10,7 +10,7 @@
         st = prev.st.overrideAttrs (old: {
 	  src = builtins.path { path = ./.; name = "st"; };
 	  buildInputs = old.buildInputs ++ [
-	    prev.haskel.Packages.gi-harfbuzz
+	    prev.harfbuzz
 	  ];
 	});
       };
