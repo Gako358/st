@@ -5,8 +5,8 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "JetBrainsMono Nerd Font :pixelsize=15:antialias=true:autohint=true";
-static char *font2[] = { "JetBrainsMono Nerd Font :pixelsize=15:antialias=true:autohint=true" };
+static char *font = "JetBrainsMono Nerd Font :pixelsize=14:antialias=true:autohint=true";
+static char *font2[] = { "JetBrainsMono Nerd Font :pixelsize=14:antialias=true:autohint=true" };
 static int borderpx = 0;
 /*
  * What program is execed by st depends of these precedence rules:
@@ -193,8 +193,8 @@ static Shortcut shortcuts[] = {
   { ShiftMask,            Button4,        kscrollup,      {.i =  1} },
   { ShiftMask,            Button5,        kscrolldown,    {.i =  1} },
 	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ TERMMOD,              XK_Prior,       zoom,           {.f = +1} },
-	{ TERMMOD,              XK_Next,        zoom,           {.f = -1} },
+	{ MODKEY,               XK_comma,       zoom,           {.f = +1} },
+	{ MODKEY,               XK_period,      zoom,           {.f = -1} },
 	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
