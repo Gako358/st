@@ -1,40 +1,35 @@
 {
-  description = "MerrinX ST build";
+  description = "MerrinX terminal (suckless + lightweight)";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  };
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs.flake-utils.url = "github:numtide/flake-utils";
 
-  outputs =
-    { self
-    , nixpkgs
-    ,
-    }:
-    let
-      system = "x86_64-linux";
-      overlay = final: prev: {
-        st = prev.st.overrideAttrs (oldAttrs: rec {
-          version = "main";
-          src = builtins.path {
-            path = ./.;
-            name = "st";
-          };
-          buildInputs =
-            oldAttrs.buildInputs
-            ++ [
-              prev.harfbuzz.dev
-            ];
-        });
-      };
-    in
-    rec {
-      overlays.default = overlay;
-      checks.${system}.build =
-        (
-          import nixpkgs {
-            inherit system;
-            overlays = [ overlay ];
-          }
-        ).st;
-    };
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let pkgs = nixpkgs.legacyPackages.${system};
+      in rec {
+        packages = flake-utils.lib.flattenTree {
+          st-mx = pkgs.callPackage ./default.nix { };
+        };
+        defaultPackage = packages.st-mx;
+        apps.st-mx = flake-utils.lib.mkApp {
+          drv = packages.st-mx;
+          exePath = "/bin/st";
+        };
+        apps.default = apps.st-mx;
+        defaultApp = apps.st-mx;
+        devShell = pkgs.mkShell rec {
+          name = "st-mx";
+          packages = with pkgs; [
+            pkgconfig
+            xorg.libX11
+            xorg.libXft
+            fontconfig
+            harfbuzz
+            gd
+            glib
+          ];
+        };
+
+      });
 }
