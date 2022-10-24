@@ -21,7 +21,7 @@
         devShell = pkgs.mkShell rec {
           name = "st-mx";
           packages = with pkgs; [
-            pkgconfig
+            pkg-config
             xorg.libX11
             xorg.libXft
             fontconfig
