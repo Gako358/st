@@ -1,25 +1,46 @@
 {
   description = "MerrinX terminal (suckless + lightweight)";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs = {
+    nixpkgs.url = "nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
 
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
-      let pkgs = nixpkgs.legacyPackages.${system};
-      in rec {
-        packages = flake-utils.lib.flattenTree {
-          st-mx = pkgs.callPackage ./default.nix { };
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [
+            (final: prev: {
+              stMX = prev.st.overrideAttrs (oldAttrs: rec {
+                src = builtins.path {
+					path = ./.;
+					name = "stMX";
+				};
+                buildInputs = 
+					oldAttrs.buildInputs
+					++ [
+						prev.gd
+						prev.glib
+						prev.fontconfig
+						prev.harfbuzz
+					];
+              });
+            })
+          ];
         };
-        defaultPackage = packages.st-mx;
-        apps.st-mx = flake-utils.lib.mkApp {
-          drv = packages.st-mx;
-          exePath = "/bin/st";
+      in
+      rec {
+        apps = {
+          st = {
+            type = "app";
+            program = "${defaultPackage}/bin/st";
+          };
         };
-        apps.default = apps.st-mx;
-        defaultApp = apps.st-mx;
+        
         devShell = pkgs.mkShell rec {
-          name = "st-mx";
+          name = "stMX";
           packages = with pkgs; [
             pkg-config
             xorg.libX11
@@ -31,5 +52,9 @@
           ];
         };
 
-      });
+        packages.stMX = pkgs.stMX;
+        defaultApp = apps.st;
+        defaultPackage = pkgs.stMX;
+      }
+    );
 }
